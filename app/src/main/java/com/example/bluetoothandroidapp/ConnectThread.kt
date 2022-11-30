@@ -21,8 +21,10 @@ class ConnectThread(private val device: BluetoothDevice) : Thread() {
     }
 
     override fun run(){
+        Log.d("MyLog", "Connecting...")
         try {
             mySocket?.connect()
+            Log.d("MyLog", "Connected")
         }catch (i: IOException){
             Log.d("MyLog", "Can not connect to device")
             closeConnection()

@@ -1,5 +1,7 @@
 package com.example.bluetoothandroidapp
 
+import android.bluetooth.BluetoothManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,12 +15,21 @@ import com.example.bluetoothandroidapp.databinding.ActivityMainBinding
 class ControlActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var actListLauncher: ActivityResultLauncher<Intent>
+    lateinit var btConnection: BtConnection
+    private var listItem: ListItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_control)
         onBtListResult()
+        init()
+    }
+
+    private fun init(){
+        val btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
+        val btAdapter = btManager.adapter
+        btConnection = BtConnection(btAdapter)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -30,7 +41,9 @@ class ControlActivity : AppCompatActivity() {
         if(item.itemId == R.id.id_list){
             actListLauncher.launch(Intent(this, BtListActivity::class.java))
         }else if(item.itemId == R.id.id_connect){
-
+            listItem.let {
+                btConnection.connect(it?.mac!!)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -39,7 +52,7 @@ class ControlActivity : AppCompatActivity() {
         actListLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == RESULT_OK){
-                Log.d("MyLog", "Name: ${(it.data?.getSerializableExtra(BtListActivity.DEVICE_KEY) as ListItem).name}")
+                listItem = it.data?.getSerializableExtra(BtListActivity.DEVICE_KEY) as ListItem
             }
         }
     }
