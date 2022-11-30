@@ -7,12 +7,10 @@ import android.bluetooth.BluetoothManager
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.core.content.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bluetoothandroidapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class BtListActivity : AppCompatActivity() {
     private var btAdapter: BluetoothAdapter? = null
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: RcAdapter
