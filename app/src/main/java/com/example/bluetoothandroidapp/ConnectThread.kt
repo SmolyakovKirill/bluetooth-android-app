@@ -9,7 +9,7 @@ import java.util.*
 
 @SuppressLint("MissingPermission")
 class ConnectThread(private val device: BluetoothDevice) : Thread() {
-    val uuid = "0000101-0000-1000-8000-00805F9B34FB"
+    val uuid = "00001101-0000-1000-8000-00805F9B34FB"
     var mySocket: BluetoothSocket? = null
 
     init {
@@ -26,7 +26,7 @@ class ConnectThread(private val device: BluetoothDevice) : Thread() {
             mySocket?.connect()
             Log.d("MyLog", "Connected")
         }catch (i: IOException){
-            Log.d("MyLog", "Can not connect to device")
+            Log.d("MyLog", "Can not connect to device: ${i.printStackTrace()}")
             closeConnection()
         }
     }
