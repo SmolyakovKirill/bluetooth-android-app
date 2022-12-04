@@ -11,6 +11,7 @@ import java.util.*
 class ConnectThread(private val device: BluetoothDevice) : Thread() {
     val uuid = "00001101-0000-1000-8000-00805F9B34FB"
     var mySocket: BluetoothSocket? = null
+    lateinit var rThread: ReceiveThread
 
     init {
         try {
@@ -25,6 +26,8 @@ class ConnectThread(private val device: BluetoothDevice) : Thread() {
         try {
             mySocket?.connect()
             Log.d("MyLog", "Connected")
+            rThread = ReceiveThread(mySocket!!)
+            rThread.start()
         }catch (i: IOException){
             Log.d("MyLog", "Can not connect to device: ${i.printStackTrace()}")
             closeConnection()

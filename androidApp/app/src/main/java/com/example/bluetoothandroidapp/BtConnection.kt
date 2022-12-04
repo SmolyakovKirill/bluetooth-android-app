@@ -1,6 +1,7 @@
 package com.example.bluetoothandroidapp
 
 import android.bluetooth.BluetoothAdapter
+import android.util.Log
 
 class BtConnection(private val adapter: BluetoothAdapter) {
     lateinit var cThread: ConnectThread
@@ -13,5 +14,10 @@ class BtConnection(private val adapter: BluetoothAdapter) {
                 cThread.start()
             }
         }
+    }
+
+    fun sendMessage(message: String){
+        Log.d("MyLog", "$message")
+        cThread.rThread.sendMessage(message.toByteArray())
     }
 }
