@@ -29,8 +29,8 @@ class ControlActivity : AppCompatActivity() {
         setContentView(R.layout.activity_control)
         onBtListResult()
         init()
-        val buttonA = findViewById<Button>(R.id.bA)
-        val buttonB = findViewById<Button>(R.id.bB)
+        val buttonA = findViewById<Button>(R.id.button)
+        val buttonB = findViewById<Button>(R.id.button2)
         buttonA.setOnClickListener {
             btConnection.sendMessage("A")
         }
