@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.Switch
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.bluetoothandroidapp.databinding.ActivityControlBinding
@@ -26,10 +27,21 @@ class ControlActivity : AppCompatActivity() {
         setContentView(R.layout.activity_control)
         onBtListResult()
         init()
-        val buttonPLay = findViewById<Button>(R.id.btnPlay)
+        val buttonPlay = findViewById<Button>(R.id.btnPlay)
         val buttonB = findViewById<Button>(R.id.button2)
-        buttonPLay.setOnClickListener {
-            btConnection.sendMessage("B")
+        val switchRedLed = findViewById<Switch>(R.id.switch1)
+
+        switchRedLed.setOnCheckedChangeListener { compoundButton, b ->
+            if(b){
+                btConnection.sendMessage("G")
+            }
+            else{
+                btConnection.sendMessage("g")
+            }
+        }
+
+        buttonPlay.setOnClickListener {
+            btConnection.sendMessage("A")
         }
         }
 
