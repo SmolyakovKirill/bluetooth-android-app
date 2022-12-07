@@ -1,21 +1,17 @@
 package com.example.bluetoothandroidapp
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.bluetoothandroidapp.databinding.ActivityControlBinding
-import com.example.bluetoothandroidapp.databinding.ActivityMainBinding
 
 class ControlActivity : AppCompatActivity() {
     private lateinit var binding: ActivityControlBinding
@@ -23,16 +19,17 @@ class ControlActivity : AppCompatActivity() {
     lateinit var btConnection: BtConnection
     private var listItem: ListItem? = null
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityControlBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_control)
         onBtListResult()
         init()
-        val buttonA = findViewById<Button>(R.id.button)
+        val buttonPLay = findViewById<Button>(R.id.btnPlay)
         val buttonB = findViewById<Button>(R.id.button2)
-        buttonA.setOnClickListener {
-            btConnection.sendMessage("A")
+        buttonPLay.setOnClickListener {
+            btConnection.sendMessage("B")
         }
         }
 
@@ -50,7 +47,7 @@ class ControlActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.id_list){
             actListLauncher.launch(Intent(this, BtListActivity::class.java))
-        }else if(item.itemId == R.id.id_connect){
+        }else if(item.itemId == R.id.id_bluetooth){
             listItem.let {
                 btConnection.connect(it?.mac!!)
             }
