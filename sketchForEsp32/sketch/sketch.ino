@@ -164,7 +164,10 @@ int melodyHarryPotter[] = {
   
 };
 
-const int redLedPin = 4;
+bool isRedActive = false;
+bool isGreenActive = false; 
+
+int currentLEDpin = 4;
 const int greenLedPin = 2;
 const int yellowLedPin = 14;
 
@@ -177,10 +180,24 @@ int divider = 0, noteDuration = 0;
 void setup() {
   WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
   Serial.begin(115200);
-  pinMode (redLedPin, OUTPUT);
-  pinMode (greenLedPin, OUTPUT);
+  pinMode (4, OUTPUT);
+  pinMode (2, OUTPUT);
+  digitalWrite(4, LOW);
+  digitalWrite(2, LOW);
   SerialBT.begin("ESP32test"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
+}
+
+void LEDoff()
+{
+    digitalWrite(currentLEDpin, LOW);
+    if (currentLEDpin==4 && isGreenActive) currentLEDpin=2;
+    else currentLEDpin=4;
+}
+
+void LEDon()
+{
+    digitalWrite(currentLEDpin, HIGH);
 }
 
 void playTetrisMusic(){
@@ -194,8 +211,10 @@ void playTetrisMusic(){
               noteDuration *= 1.5; // increases the duration in half for dotted notes
             }
             tone(BUZZER_PIN, melodyTetris[thisNote], noteDuration*0.9, BUZZER_CHANNEL);
+            LEDon();
             delay(noteDuration);
             noTone(BUZZER_PIN, BUZZER_CHANNEL);
+            LEDoff();
         }
 }
 
@@ -254,13 +273,14 @@ void loop() {
   if (SerialBT.available()) {
     char ch = SerialBT.read();
     Serial.write(SerialBT.read());
+    if(ch == 'G'){
+        isGreenActive = true;
+      }
     if(ch == 'A'){
         playTetrisMusic();
-        digitalWrite (redLedPin, HIGH);
       }
     if(ch == 'a'){
         playGameOfThronesMusic();
-        digitalWrite (redLedPin, LOW);
       }
     if(ch == 'B'){
         playTakeOnMeMusic();
